@@ -1,0 +1,4 @@
+rootProject.name = 'webcrawler'
+
+include ':core'
+include ':ui'
