@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="WebCrawler">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>model.ResourceEntity</class>
+        <class>model.Website</class>
+
+        <properties>
+
+            <property name="eclipselink.jdbc.url" value="jdbc:mysql://unium.nl:3306/marc_webcrawler"/>
+            <property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="eclipselink.jdbc.user" value="marc_webcrawler"/>
+            <property name="eclipselink.jdbc.password" value="vu2ga4LsrV"/>
+
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+            <property name="eclipselink.create-ddl-jdbc-file-name" value="createDDL_ddlGeneration.jdbc"/>
+            <property name="eclipselink.drop-ddl-jdbc-file-name" value="dropDDL_ddlGeneration.jdbc"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="both"/>
+
+        </properties>
+    </persistence-unit>
+</persistence>
