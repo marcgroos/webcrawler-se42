@@ -4,19 +4,16 @@ import constants.DBConstants;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Created by Marc on 10-5-2017.
  */
 @Entity
 @Table(name = "website", schema = DBConstants.DB_NAME, catalog = "")
-public class WebsiteEntity {
+public class TagEntity {
     private int websiteId;
     private Timestamp date;
     private String url;
-    private List<WebsiteEntity> childs;
-//    private List<LinkEntity> links;
 
     @Id
     @GeneratedValue
@@ -49,21 +46,12 @@ public class WebsiteEntity {
         this.url = url;
     }
 
-//    @OneToMany
-//    public List<LinkEntity> getLinks() {
-//        return links;
-//    }
-//
-//    public void setLinks(List<LinkEntity> links) {
-//        this.links = links;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        WebsiteEntity that = (WebsiteEntity) o;
+        TagEntity that = (TagEntity) o;
 
         if (websiteId != that.websiteId) return false;
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
