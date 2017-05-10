@@ -1,4 +1,4 @@
-rootProject.name = 'webcrawler'
+rootProject.name = 'org.webcrawler'
 
 include ':core'
 include ':ui'

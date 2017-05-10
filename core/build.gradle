@@ -1,3 +1,4 @@
 dependencies {
     compile 'org.eclipse.persistence:eclipselink:2.6.4'
+    compile 'mysql:mysql-connector-java:5.1.39'
 }
