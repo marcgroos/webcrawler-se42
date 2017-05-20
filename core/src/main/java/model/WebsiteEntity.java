@@ -1,6 +1,7 @@
 package model;
 
 import constants.DBConstants;
+import org.jsoup.nodes.Document;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -16,6 +17,7 @@ public class WebsiteEntity {
     private Timestamp date;
     private String url;
     private List<WebsiteEntity> childs;
+    private Document htmlDoc;
 //    private List<LinkEntity> links;
 
     @Id
@@ -78,5 +80,9 @@ public class WebsiteEntity {
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
+    }
+
+    public void setHtmlDoc(Document htmlDoc) {
+        this.htmlDoc = htmlDoc;
     }
 }

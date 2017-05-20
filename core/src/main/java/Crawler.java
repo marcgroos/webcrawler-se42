@@ -6,7 +6,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * the class responsible for crawling through the web, it uses HTMLparser to look at websites.
+ * this class saves crawled websites to not create double entries and circular references.
  * Created by Marc on 10-5-2017.
+ * @author Marc
+ * @author Yannic
  */
 public class Crawler {
 
@@ -39,16 +43,12 @@ public class Crawler {
     }
 
     private WebsiteEntity parseUrl(String siteUrl) throws Exception{
-        WebsiteEntity w = new WebsiteEntity();
-        w.setUrl(siteUrl);
-        parser.setUrl(siteUrl);
 
-        //todo bedenk hoe pages worden aangemaakt, en hoe ze worden gebruikt.
-        //setPageLinks kan de pages zelf aanmaken, is er dan ook een homepage page in website?
-        //hoe worden pages in pages aan de website toegevoegd?
+
+        WebsiteEntity website = new WebsiteEntity();
+        org.jsoup.nodes.Document doc = parser.getWebsite(siteUrl);
+        website.setHtmlDoc(doc);
         //
-        w.setPageLinks(parser.getPageLinks());
-        w.setExtLinks(parser.getExtLinks());
 
         return null;
     }
@@ -62,7 +62,7 @@ public class Crawler {
             return parseUrl(startUrl);
 
         } catch (Exception e){
-            Logger.getLogger(this.getClass().toString()).log(Level.WARNING, "Error while parsing URL");
+            Logger.getLogger(this.getClass().toString()).log(Level.WARNING, "Unknown error while parsing URL");
         }
         return null;
     }
