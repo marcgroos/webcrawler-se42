@@ -22,7 +22,7 @@ public class HTMLParser {
 
     }
 
-    public Document getWebsite(String url) throws MalformedURLException, HttpStatusException{
+    public Document getWebsiteHTML(String url) throws MalformedURLException, HttpStatusException{
         try {
             htmlDoc = Jsoup.connect(url).get();
         } catch (IOException e){

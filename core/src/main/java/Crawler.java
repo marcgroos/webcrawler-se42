@@ -44,9 +44,9 @@ public class Crawler {
 
     private WebsiteEntity parseUrl(String siteUrl) throws Exception{
 
-
+        
         WebsiteEntity website = new WebsiteEntity();
-        org.jsoup.nodes.Document doc = parser.getWebsite(siteUrl);
+        org.jsoup.nodes.Document doc = parser.getWebsiteHTML(siteUrl);
         website.setHtmlDoc(doc);
         //
 
