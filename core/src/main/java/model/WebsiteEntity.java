@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Marc on 10-5-2017.
  */
 @Entity
-@Table(name = "website", schema = DBConstants.DB_NAME, catalog = "")
+@Table(name = "website", schema = DBConstants.DB_NAME)
 public class WebsiteEntity {
     private int websiteId;
     private Timestamp date;
@@ -21,8 +21,7 @@ public class WebsiteEntity {
         this.page = homepage;
     }
 
-    public Page getPage() {
-        return page;
+    public WebsiteEntity() {
     }
 
     @Id

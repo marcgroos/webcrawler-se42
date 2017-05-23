@@ -3,42 +3,49 @@ package model;
 import constants.DBConstants;
 
 import javax.persistence.*;
-import java.security.Timestamp;
 
 /**
-import constants.DBConstants;
-
-import javax.persistence.*;
-import java.sql.Timestamp;
-
- * Created by Marc on 10-5-2017.
+ * Created by Marc on 23-5-2017.
  */
 @Entity
-@Table(name = "website", schema = DBConstants.DB_NAME, catalog = "")
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name="resource_type")
+@Table(name = "resource", schema = DBConstants.DB_NAME)
 public class ResourceEntity {
-    private int websiteId;
-    private Timestamp date;
-    private String url;
 
     @Id
     @GeneratedValue
-    @Column(name = "website_id", nullable = false)
-    public int getWebsiteId() {
-        return websiteId;
+    @Column(name = "resource_id")
+    private int resourceId;
+    private String name;
+    private String url;
+    private int size;
+
+    public ResourceEntity(String name, String url, int size) {
+        this.name = name;
+        this.url = url;
+        this.size = size;
     }
 
-    public void setWebsiteId(int websiteId) {
-        this.websiteId = websiteId;
+    public ResourceEntity() {
+    }
+
+    public int getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(int resourceId) {
+        this.resourceId = resourceId;
     }
 
     @Basic
-    @Column(name = "date")
-    public Timestamp getDate() {
-        return date;
+    @Column(name = "name")
+    public String getName() {
+        return name;
     }
 
-    public void setDate(Timestamp date) {
-        this.date = date;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Basic
@@ -51,6 +58,16 @@ public class ResourceEntity {
         this.url = url;
     }
 
+    @Basic
+    @Column(name = "size")
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,8 +75,9 @@ public class ResourceEntity {
 
         ResourceEntity that = (ResourceEntity) o;
 
-        if (websiteId != that.websiteId) return false;
-        if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (resourceId != that.resourceId) return false;
+        if (size != that.size) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (url != null ? !url.equals(that.url) : that.url != null) return false;
 
         return true;
@@ -67,9 +85,10 @@ public class ResourceEntity {
 
     @Override
     public int hashCode() {
-        int result = websiteId;
-        result = 31 * result + (date != null ? date.hashCode() : 0);
+        int result = resourceId;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (url != null ? url.hashCode() : 0);
+        result = 31 * result + size;
         return result;
     }
 }
