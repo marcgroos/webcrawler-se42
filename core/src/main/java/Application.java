@@ -17,19 +17,20 @@ public class Application {
     public static void main(String[] args) {
         String startUrl = "http://stackoverflow.com/";
         Crawler mainCrawler = new Crawler(startUrl, 2);
+        mainCrawler.start();
 
     }
 
     private static void testPersistance(){
-        EntityManager entityManager = DBUtil.getEntityManager();
-
-        WebsiteEntity w = new WebsiteEntity();
-        w.setUrl("www.kaas.nl");
-
-
-        entityManager.getTransaction().begin();
-        entityManager.persist(w);
-        entityManager.getTransaction().commit();
+//        EntityManager entityManager = DBUtil.getEntityManager();
+//
+//        WebsiteEntity w = new WebsiteEntity();
+//        w.setUrl("www.kaas.nl");
+//
+//
+//        entityManager.getTransaction().begin();
+//        entityManager.persist(w);
+//        entityManager.getTransaction().commit();
     }
 
 }

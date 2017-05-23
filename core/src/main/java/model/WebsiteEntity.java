@@ -16,9 +16,14 @@ public class WebsiteEntity {
     private int websiteId;
     private Timestamp date;
     private String url;
-    private List<WebsiteEntity> childs;
-    private Document htmlDoc;
+    private Page page;
+
 //    private List<LinkEntity> links;
+
+
+    public WebsiteEntity(Page homepage) {
+        this.page = homepage;
+    }
 
     @Id
     @GeneratedValue
@@ -46,8 +51,7 @@ public class WebsiteEntity {
     public String getUrl() {
         return url;
     }
-
-    public void setUrl(String url) {
+    public void setUrl(String url){
         this.url = url;
     }
 

@@ -1,4 +1,9 @@
+import model.Page;
 import model.WebsiteEntity;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import util.HTMLParser;
 
 import java.util.List;
@@ -18,12 +23,9 @@ public class Crawler {
     private String startUrl;
     private int maxDepth;
 
-    private HTMLParser parser;
-
     public Crawler(String startUrl, int maxDepth) {
         this.startUrl = startUrl;
         this.maxDepth = maxDepth;
-        parser = new HTMLParser();
     }
 
     public String getStartUrl() {
@@ -42,15 +44,16 @@ public class Crawler {
         this.maxDepth = maxDepth;
     }
 
-    private WebsiteEntity parseUrl(String siteUrl) throws Exception{
+    /**
+     * this method parses a URL and returns a page
+     * @return a Page
+     */
+    private Page parseUrl(String siteUrl) throws Exception{
 
-        
-        WebsiteEntity website = new WebsiteEntity();
-        org.jsoup.nodes.Document doc = parser.getWebsiteHTML(siteUrl);
-        website.setHtmlDoc(doc);
-        //
-
-        return null;
+        Document doc = Jsoup.connect(siteUrl).get();
+        Elements links = doc.select("a");
+        Page page = new Page(doc);
+        return page;
     }
 
     /**
@@ -59,7 +62,8 @@ public class Crawler {
      */
     public WebsiteEntity start() {
         try {
-            return parseUrl(startUrl);
+            Page page = parseUrl(startUrl);
+            return new WebsiteEntity(page);
 
         } catch (Exception e){
             Logger.getLogger(this.getClass().toString()).log(Level.WARNING, "Unknown error while parsing URL");
