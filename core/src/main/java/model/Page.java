@@ -28,7 +28,9 @@ public class Page {
         Elements links = document.select("a");
         for (Element e : links) {
             //todo distinguish between this and external domains.
-            subPages.add(e.attr("href"));
+            String link = e.attr("abs:href");
+            System.out.println(link);
+            subPages.add(link);
         }
 
     }

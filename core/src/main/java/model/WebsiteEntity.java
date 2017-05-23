@@ -1,11 +1,9 @@
 package model;
 
 import constants.DBConstants;
-import org.jsoup.nodes.Document;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Created by Marc on 10-5-2017.
@@ -18,11 +16,12 @@ public class WebsiteEntity {
     private String url;
     private Page page;
 
-//    private List<LinkEntity> links;
-
-
     public WebsiteEntity(Page homepage) {
         this.page = homepage;
+    }
+
+    public Page getPage() {
+        return page;
     }
 
     @Id
@@ -51,18 +50,10 @@ public class WebsiteEntity {
     public String getUrl() {
         return url;
     }
-    public void setUrl(String url){
+
+    public void setUrl(String url) {
         this.url = url;
     }
-
-//    @OneToMany
-//    public List<LinkEntity> getLinks() {
-//        return links;
-//    }
-//
-//    public void setLinks(List<LinkEntity> links) {
-//        this.links = links;
-//    }
 
     @Override
     public boolean equals(Object o) {
