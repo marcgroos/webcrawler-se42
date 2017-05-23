@@ -17,7 +17,8 @@ public class Application {
     public static void main(String[] args) {
         String startUrl = "http://stackoverflow.com/";
         Crawler mainCrawler = new Crawler(startUrl, 2);
-        mainCrawler.start();
+        WebsiteEntity rootSite = mainCrawler.start();
+
 
     }
 

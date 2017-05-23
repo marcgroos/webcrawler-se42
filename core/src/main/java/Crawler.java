@@ -3,7 +3,10 @@ import model.WebsiteEntity;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +21,7 @@ import java.util.logging.Logger;
 public class Crawler {
 
     private WebsiteEntity website;
+    private Map<String, WebsiteEntity> websites;
     private String startUrl;
     private int maxDepth;
 
@@ -43,10 +47,14 @@ public class Crawler {
      *
      * @return a Page
      */
-    private Page parseUrl(String siteUrl) throws Exception {
+    private Page parseUrl(String siteUrl) throws IOException {
+        System.out.println("loading page: " + siteUrl);
 
         Document doc = Jsoup.connect(siteUrl).get();
         Page page = new Page(siteUrl, doc);
+
+        System.out.println("done loading");
+
         return page;
     }
 
@@ -72,8 +80,16 @@ public class Crawler {
      * @param website
      * @return A list of Websites.
      */
-    public List<WebsiteEntity> getExternalSitesFromSite(WebsiteEntity website) {
+    public List<WebsiteEntity> getExternalSitesFromSite(WebsiteEntity website) throws IOException{
 
-        return null;
+        List<WebsiteEntity> extSites = new ArrayList<>();
+
+        List<String> pages = website.getPage().getExtPages();
+        for(String url:pages){
+            Page newPage = parseUrl(url);
+            extSites.add(new WebsiteEntity(newPage));
+        }
+
+        return extSites;
     }
 }

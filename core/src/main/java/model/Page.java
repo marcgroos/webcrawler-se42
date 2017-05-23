@@ -27,12 +27,27 @@ public class Page {
 
         Elements links = document.select("a");
         for (Element e : links) {
-            //todo distinguish between this and external domains.
+
             String link = e.attr("abs:href");
-            System.out.println(link);
-            subPages.add(link);
+            if(link.contains(getTrimUrl())){
+                subPages.add(link);
+                //System.out.println("sub " + link);
+            } else {
+                extPages.add(link);
+                //System.out.println("ext " + link);
+            }
+
+            //
+
         }
 
+    }
+
+
+    public String getTrimUrl(){
+        int startIndex = url.indexOf("://");
+        String out = url.substring(startIndex, url.indexOf("/", startIndex+3));
+        return out;
     }
 
     public String getUrl() {
