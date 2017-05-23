@@ -52,7 +52,7 @@ public class Crawler {
 
         Document doc = Jsoup.connect(siteUrl).get();
         Elements links = doc.select("a");
-        Page page = new Page(doc);
+        Page page = new Page(siteUrl, doc);
         return page;
     }
 

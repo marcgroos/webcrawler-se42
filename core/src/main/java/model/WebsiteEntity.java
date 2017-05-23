@@ -86,7 +86,4 @@ public class WebsiteEntity {
         return result;
     }
 
-    public void setHtmlDoc(Document htmlDoc) {
-        this.htmlDoc = htmlDoc;
-    }
 }
