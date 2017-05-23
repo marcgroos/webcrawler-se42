@@ -3,6 +3,6 @@
  */
 public class Application {
     public static void main(String[] args) {
-        Website w = new Website();
+        System.out.println("No working UI yet");
     }
 }

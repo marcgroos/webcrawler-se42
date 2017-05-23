@@ -3,9 +3,14 @@ package model;
 import constants.DBConstants;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.security.Timestamp;
 
 /**
+import constants.DBConstants;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+
  * Created by Marc on 10-5-2017.
  */
 @Entity
