@@ -4,7 +4,11 @@
     <persistence-unit name="WebCrawler">
 
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <class>model.WebsiteEntity</class>
+        <!--<class>model.WebsiteEntity</class>-->
+        <class>model.ResourceEntity</class>
+        <class>model.ImageEntity</class>
+        <class>model.VideoEntity</class>
+        <class>model.AudioEntity</class>
 
         <properties>
 

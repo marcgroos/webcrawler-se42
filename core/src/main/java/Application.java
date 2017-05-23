@@ -1,3 +1,4 @@
+import model.ImageEntity;
 import model.WebsiteEntity;
 import util.DBUtil;
 
@@ -15,13 +16,21 @@ import java.net.URL;
 public class Application {
 
     public static void main(String[] args) {
-        String startUrl = "http://stackoverflow.com/";
-        Crawler mainCrawler = new Crawler(startUrl, 2);
-        mainCrawler.start();
+//        String startUrl = "http://stackoverflow.com/";
+//        Crawler mainCrawler = new Crawler(startUrl, 2);
+//        mainCrawler.start();
+
+        EntityManager entityManager = DBUtil.getEntityManager();
+
+        ImageEntity i = new ImageEntity("plaatje", "http://unium.nl/plaatje.jpg", 5983754, 640, 480);
+
+        entityManager.getTransaction().begin();
+        entityManager.persist(i);
+        entityManager.getTransaction().commit();
 
     }
 
-    private static void testPersistance(){
+    private static void testPersistance() {
 //        EntityManager entityManager = DBUtil.getEntityManager();
 //
 //        WebsiteEntity w = new WebsiteEntity();
