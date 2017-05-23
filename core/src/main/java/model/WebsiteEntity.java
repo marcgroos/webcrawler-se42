@@ -1,11 +1,9 @@
 package model;
 
 import constants.DBConstants;
-import org.jsoup.nodes.Document;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Created by Marc on 10-5-2017.
@@ -16,9 +14,15 @@ public class WebsiteEntity {
     private int websiteId;
     private Timestamp date;
     private String url;
-    private List<WebsiteEntity> childs;
-    private Document htmlDoc;
-//    private List<LinkEntity> links;
+    private Page page;
+
+    public WebsiteEntity(Page homepage) {
+        this.page = homepage;
+    }
+
+    public Page getPage() {
+        return page;
+    }
 
     @Id
     @GeneratedValue
@@ -51,15 +55,6 @@ public class WebsiteEntity {
         this.url = url;
     }
 
-//    @OneToMany
-//    public List<LinkEntity> getLinks() {
-//        return links;
-//    }
-//
-//    public void setLinks(List<LinkEntity> links) {
-//        this.links = links;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,7 +77,4 @@ public class WebsiteEntity {
         return result;
     }
 
-    public void setHtmlDoc(Document htmlDoc) {
-        this.htmlDoc = htmlDoc;
-    }
 }
