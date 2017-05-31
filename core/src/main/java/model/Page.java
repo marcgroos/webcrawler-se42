@@ -37,8 +37,6 @@ public class Page {
                 //System.out.println("ext " + link);
             }
 
-            //
-
         }
 
     }
