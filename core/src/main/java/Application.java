@@ -18,7 +18,7 @@ public class Application {
         String startUrl = "http://stackoverflow.com/";
         Crawler mainCrawler = new Crawler(startUrl, 2);
         WebsiteEntity rootSite = mainCrawler.start();
-
+        mainCrawler.getExternalSitesFromSite(rootSite);
 
     }
 

@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * the class responsible for crawling through the web, it uses HTMLparser to look at websites.
+ * the class responsible for crawling through the web, it uses Jsoup (library) to look at websites.
  * this class saves crawled websites to not create double entries and circular references.
  * Created by Marc on 10-5-2017.
  *
@@ -20,8 +20,8 @@ import java.util.logging.Logger;
  */
 public class Crawler {
 
-    private WebsiteEntity website;
-    private Map<String, WebsiteEntity> websites;
+    private WebsiteEntity startWebsite;
+    private Map<String, WebsiteEntity> visitedWebsites;
     private String startUrl;
     private int maxDepth;
 
@@ -60,13 +60,16 @@ public class Crawler {
 
     /**
      * Creates the first website entity with the entered parameters
-     *
-     * @return a WebsiteEntity or null if errors occur
-     */
+     * This method expects the homepage of a website (e.g: http://www.stackoverflow.com).
+     * @return a WebsiteEntity or null if errors occur  
+     */;
     public WebsiteEntity start() {
         try {
             Page page = parseUrl(startUrl);
-            return new WebsiteEntity(page);
+            //add website to visited sites.
+            WebsiteEntity site = new WebsiteEntity(page);
+            visitedWebsites.put(site.getUrl(), site);
+            return site;
 
         } catch (Exception e) {
             Logger.getLogger(this.getClass().toString()).log(Level.WARNING, "Unknown error while parsing URL");
@@ -80,16 +83,26 @@ public class Crawler {
      * @param website
      * @return A list of Websites.
      */
-    public List<WebsiteEntity> getExternalSitesFromSite(WebsiteEntity website) throws IOException{
+    public List<WebsiteEntity> getExternalSitesFromSite(WebsiteEntity website){
 
         List<WebsiteEntity> extSites = new ArrayList<>();
 
         List<String> pages = website.getPage().getExtPages();
         for(String url:pages){
-            Page newPage = parseUrl(url);
-            extSites.add(new WebsiteEntity(newPage));
-        }
+            //check if website is visited, if so, return that one.
+            if(visitedWebsites.containsKey(url)){
+                extSites.add(visitedWebsites.get(url));
+            }else {
+                Page newPage = null;
+                try {
+                    newPage = parseUrl(url);
+                    extSites.add(new WebsiteEntity(newPage));
+                } catch (IOException e) {
+                    Logger.getLogger(this.getClass().toString()).log(Level.WARNING, "Error while parsing URL");
+                }
 
+            }
+        }
         return extSites;
     }
 }
