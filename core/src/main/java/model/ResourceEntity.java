@@ -17,8 +17,14 @@ public class ResourceEntity {
     @GeneratedValue
     @Column(name = "resource_id")
     private int resourceId;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "url")
     private String url;
+
+    @Column(name = "size")
     private int size;
 
     public ResourceEntity(String name, String url, int size) {
@@ -38,8 +44,6 @@ public class ResourceEntity {
         this.resourceId = resourceId;
     }
 
-    @Basic
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -48,8 +52,7 @@ public class ResourceEntity {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "url")
+
     public String getUrl() {
         return url;
     }
@@ -58,8 +61,7 @@ public class ResourceEntity {
         this.url = url;
     }
 
-    @Basic
-    @Column(name = "size")
+
     public int getSize() {
         return size;
     }
