@@ -4,9 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +18,8 @@ import java.util.logging.Logger;
  */
 public class Crawler {
 
+    private static final Logger LOGGER = Logger.getLogger(Crawler.class.getName());
+
     private WebsiteEntity startWebsite;
     private Map<String, WebsiteEntity> visitedWebsites;
     private String startUrl;
@@ -28,6 +28,7 @@ public class Crawler {
     public Crawler(String startUrl, int maxDepth) {
         this.startUrl = startUrl;
         this.maxDepth = maxDepth;
+        visitedWebsites = new HashMap<>();
     }
 
     public String getStartUrl() {
@@ -44,17 +45,11 @@ public class Crawler {
 
     /**
      * this method parses a URL and returns a page
-     *
+     * does NOT load the links of the page, call page.initPageSites()
      * @return a Page
      */
     private Page parseUrl(String siteUrl) throws IOException {
-        System.out.println("loading page: " + siteUrl);
-
-        Document doc = Jsoup.connect(siteUrl).get();
-        Page page = new Page(siteUrl, doc);
-
-        System.out.println("done loading");
-
+        Page page = new Page(siteUrl);
         return page;
     }
 
@@ -68,11 +63,13 @@ public class Crawler {
             Page page = parseUrl(startUrl);
             //add website to visited sites.
             WebsiteEntity site = new WebsiteEntity(page);
-            visitedWebsites.put(site.getUrl(), site);
+            visitedWebsites.put(page.getTrimUrl(true), site);
             return site;
 
-        } catch (Exception e) {
-            Logger.getLogger(this.getClass().toString()).log(Level.WARNING, "Unknown error while parsing URL");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Unknown error while parsing URL" + e.getMessage(), e);
+        } catch (Exception e){
+            LOGGER.log(Level.SEVERE, "Unexpected error occured while creating site");
         }
         return null;
     }
@@ -87,22 +84,43 @@ public class Crawler {
 
         List<WebsiteEntity> extSites = new ArrayList<>();
 
-        List<String> pages = website.getPage().getExtPages();
+        Page homePage = website.getPage();
+        homePage.initPageSites();
+        Set<String> pages = homePage.getExtPages();
         for(String url:pages){
             //check if website is visited, if so, return that one.
-            if(visitedWebsites.containsKey(url)){
-                extSites.add(visitedWebsites.get(url));
+            Page tempPage = null;
+            try {
+                tempPage = parseUrl(url);
+            } catch (IOException e) {
+                LOGGER.log(Level.WARNING, "Error parsing url: " +url+ "\n" +e.getMessage(), e);
+                continue;
+            } catch (IllegalArgumentException e){
+                LOGGER.log(Level.WARNING, "Invalid URL: "+url+ "\n" +e.getMessage());
+                continue;
+            }
+            if(isKnownDomain(tempPage)){
+                //add the the url to the already existing website's Set of urls
+                visitedWebsites.get(tempPage.getTrimUrl(true)).getPage().getSubPages().add(url);
             }else {
-                Page newPage = null;
+                //create a new website with the trimmed url, and new HomePage.
+                String trimUrl = tempPage.getTrimUrl(true);
                 try {
-                    newPage = parseUrl(url);
-                    extSites.add(new WebsiteEntity(newPage));
+                    visitedWebsites.put(trimUrl, new WebsiteEntity(parseUrl(trimUrl)));
                 } catch (IOException e) {
-                    Logger.getLogger(this.getClass().toString()).log(Level.WARNING, "Error while parsing URL");
+                    LOGGER.log(Level.WARNING, "Error getting homepage: "+ trimUrl);
+                    visitedWebsites.remove(trimUrl);
                 }
-
             }
         }
         return extSites;
+    }
+
+    private boolean isKnownDomain(Page page) {
+        if(visitedWebsites.containsKey(page.getTrimUrl(true))){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

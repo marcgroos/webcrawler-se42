@@ -17,8 +17,13 @@ public class WebsiteEntity {
     private String url;
     private Page page;
 
+    public Page getPage() {
+        return page;
+    }
+
     public WebsiteEntity(Page homepage) {
         this.page = homepage;
+        url = page.getUrl();
     }
 
     public WebsiteEntity() {

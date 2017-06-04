@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 /**
  * Created by Marc on 3-5-2017.
@@ -18,7 +19,7 @@ public class Application {
         String startUrl = "http://stackoverflow.com/";
         Crawler mainCrawler = new Crawler(startUrl, 2);
         WebsiteEntity rootSite = mainCrawler.start();
-        mainCrawler.getExternalSitesFromSite(rootSite);
+        List<WebsiteEntity> siteList = mainCrawler.getExternalSitesFromSite(rootSite);
 
     }
 
