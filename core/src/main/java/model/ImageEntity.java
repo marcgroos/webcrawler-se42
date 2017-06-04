@@ -2,6 +2,7 @@ package model;
 
 import constants.DBConstants;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -14,7 +15,10 @@ import javax.persistence.Table;
 @Table(name = "image", schema = DBConstants.DB_NAME)
 public class ImageEntity extends ResourceEntity {
 
+    @Column(name = "width")
     private int width;
+
+    @Column(name = "height")
     private int height;
 
     public ImageEntity(String name, String url, int size, int width, int height) {
@@ -30,5 +34,21 @@ public class ImageEntity extends ResourceEntity {
     }
 
     public ImageEntity() {
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }
