@@ -21,7 +21,6 @@ import java.util.logging.Logger;
  * @author Yannic on 23-5-17.
  */
 public class Page {
-    //todo change the Lists of pages with a Set, for uniqueness
 
     private static final Logger LOGGER = Logger.getLogger(Page.class.getName());
 
