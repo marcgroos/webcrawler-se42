@@ -87,11 +87,12 @@ public class Page {
     }
 
     public Set<String> getSubPages() {
-        return subPages;
+        return new HashSet<>(subPages);
     }
 
-    public void setSubPages(Set<String> subPages) {
-        this.subPages = subPages;
+    public void addSubPage(String url) {
+        //add url checking.
+        subPages.add(url);
     }
 
     public Set<String> getExtPages() {

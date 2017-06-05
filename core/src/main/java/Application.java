@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.List;
 
@@ -16,9 +17,16 @@ import java.util.List;
 public class Application {
 
     public static void main(String[] args) {
-        String startUrl = "http://stackoverflow.com/";
-        Crawler mainCrawler = new Crawler(startUrl, 2);
-        WebsiteEntity rootSite = mainCrawler.start();
+        String startUrl = "http://google.com/";
+        Crawler mainCrawler = null;
+        try {
+            mainCrawler = new Crawler(startUrl);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (SocketTimeoutException e) {
+            e.printStackTrace();
+        }
+        WebsiteEntity rootSite = mainCrawler.getStartWebsite();
         List<WebsiteEntity> siteList = mainCrawler.getExternalSitesFromSite(rootSite);
 
     }
