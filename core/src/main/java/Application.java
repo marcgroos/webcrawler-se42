@@ -27,7 +27,8 @@ public class Application {
             e.printStackTrace();
         }
         WebsiteEntity rootSite = mainCrawler.getStartWebsite();
-        List<WebsiteEntity> siteList = mainCrawler.getExternalSitesFromSite(rootSite);
+        mainCrawler.getRecourcesForWebsite(rootSite);
+        //List<WebsiteEntity> siteList = mainCrawler.getExternalSitesFromSite(rootSite);
 
     }
 

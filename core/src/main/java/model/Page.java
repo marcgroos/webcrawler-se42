@@ -41,9 +41,14 @@ public class Page {
         initPageDoc();
     }
 
+    public Document getDocument() {
+        return document;
+    }
+
     private void initPageDoc() throws IOException {
         LOGGER.log(Level.INFO, "loading page: " + url);
         document = Jsoup.connect(url).get();
+
         //LOGGER.log(Level.INFO, "done loading");
     }
 
