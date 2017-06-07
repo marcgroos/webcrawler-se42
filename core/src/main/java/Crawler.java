@@ -1,16 +1,22 @@
+import javafx.scene.image.*;
+import javafx.scene.image.Image;
 import model.Page;
 import model.ResourceEntity;
 import model.WebsiteEntity;
-import org.apache.commons.io.FileUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,24 +56,25 @@ public class Crawler {
         String filenamePrefix = website.getPage().getTrimUrl(false) + System.currentTimeMillis();
         List<ResourceEntity> resources = new ArrayList<>();
 
-        for (Element img : images) {
-            File file = null;
+        for (Element imgElement : images) {
+            BufferedImage image = null;
             try {
 
-                URL url = new URL(img.attr("abs:src"));
+                URL url = new URL(imgElement.attr("abs:src"));
+                image = ImageIO.read(url);
                 String filename = filenamePrefix + url.getFile();
-                file = new File("/home/zeb/IdeaProjects/S44/webcrawler-se42/core/src/main/resources/foundFiles/" + filename);
-                FileUtils.copyURLToFile(url, file);
-                String test = file.getCanonicalPath();
+                FileOutputStream fileOut = new FileOutputStream("/home/zeb/IdeaProjects/S44/webcrawler-se42/core/src/main/resources/foundFiles/" + filename);
+                ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
+                objOut.writeObject(image);
 
-                ResourceEntity resource = new ResourceEntity(file.getName(), url.toString(), (int) file.getTotalSpace());
+                ResourceEntity resource = new ResourceEntity(filename, url.toString(), 0);
                 resources.add(resource);
 
             } catch (MalformedURLException e1) {
                 LOGGER.log(Level.WARNING, e1.getCause() + e1.getMessage());
                 continue;
             } catch (IOException e2) {
-                LOGGER.log(Level.FINE, "Error downloading file " + e2.getMessage());
+                LOGGER.log(Level.WARNING, "Error downloading file " + e2.getMessage());
                 e2.printStackTrace();
                 continue;
             }
