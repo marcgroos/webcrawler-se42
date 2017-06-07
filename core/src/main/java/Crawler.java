@@ -73,7 +73,7 @@ public class Crawler {
     }
 
     private ResourceEntity checkAndCreateResource(URL url) {
-        //todo
+        //todo create method, fix something for getting properties for different filetypes.
         String fileName = url.getFile();
         String extension = fileName.substring(fileName.lastIndexOf("."));
 
@@ -92,7 +92,7 @@ public class Crawler {
     }
 
     private Boolean DLFileFromResource(ResourceEntity resource, String fileTemplate) {
-
+        //todo move DL functionality to new class
 
         String filename = resource.getURL() + resource.getName();
         OutputStream fileOut = null;
