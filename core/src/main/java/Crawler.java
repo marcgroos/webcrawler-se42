@@ -1,24 +1,18 @@
-import javafx.scene.image.*;
-import javafx.scene.image.Image;
 import model.Page;
 import model.ResourceEntity;
 import model.WebsiteEntity;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.*;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static org.apache.commons.io.IOUtils.closeQuietly;
 
 /**
  * the class responsible for crawling through the web, it uses Jsoup (library) to look at websites.
@@ -37,11 +31,14 @@ public class Crawler {
     private Map<String, WebsiteEntity> visitedWebsites;
     private Map<String, List<ResourceEntity>> resourceMap;
     private String startUrl;
+    //the string to the root folder of app, used for saving temp files
+    private String resourceDir;
 
     public Crawler(String startUrl) throws MalformedURLException, SocketTimeoutException {
         this.startUrl = startUrl;
         visitedWebsites = new HashMap<>();
         startWebsite = start();
+        resourceDir = System.getProperty("user.dir") + "/core/src/main/resources/foundFiles";
     }
 
     /**
@@ -50,36 +47,78 @@ public class Crawler {
      * @param website
      * @return
      */
-    public List<ResourceEntity> getRecourcesForWebsite(WebsiteEntity website) {
-        //todo separate audio, video and photo types. (maybe make new class with generics to solve this?)
-        Elements images = website.getPage().getDocument().select("img");
-        String filenamePrefix = website.getPage().getTrimUrl(false) + System.currentTimeMillis();
+    public List<ResourceEntity> getResourcesForWebsite(WebsiteEntity website, Boolean saveToDisk) {
+        //todo separate audio, video and photo types.
+        Elements sourcesElement = website.getPage().getDocument().select("[src]");
+        String filenamePrefix = website.getPage().getSimpleUrl() + "_";
+
         List<ResourceEntity> resources = new ArrayList<>();
 
-        for (Element imgElement : images) {
-            BufferedImage image = null;
+        for (Element source : sourcesElement) {
             try {
-
-                URL url = new URL(imgElement.attr("abs:src"));
-                image = ImageIO.read(url);
-                String filename = filenamePrefix + url.getFile();
-                FileOutputStream fileOut = new FileOutputStream("/home/zeb/IdeaProjects/S44/webcrawler-se42/core/src/main/resources/foundFiles/" + filename);
-                ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
-                objOut.writeObject(image);
-
-                ResourceEntity resource = new ResourceEntity(filename, url.toString(), 0);
+                //prepare file and source
+                URL url = new URL(source.attr("abs:src"));
+                ResourceEntity resource = checkAndCreateResource(url);
+                //if preferred, save file to disk
+                if (saveToDisk) {
+                    DLFileFromResource(resource, filenamePrefix);
+                }
                 resources.add(resource);
 
             } catch (MalformedURLException e1) {
                 LOGGER.log(Level.WARNING, e1.getCause() + e1.getMessage());
-                continue;
-            } catch (IOException e2) {
-                LOGGER.log(Level.WARNING, "Error downloading file " + e2.getMessage());
-                e2.printStackTrace();
-                continue;
             }
         }
         return resources;
+    }
+
+    private ResourceEntity checkAndCreateResource(URL url) {
+        //todo
+        String fileName = url.getFile();
+        String extension = fileName.substring(fileName.lastIndexOf("."));
+
+        switch (extension){
+            case ".mp3":
+                break;
+            case ".png":
+            case ".jpg":
+                break;
+            case ".mp4":
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    private Boolean DLFileFromResource(ResourceEntity resource, String fileTemplate) {
+
+
+        String filename = resource.getURL() + resource.getName();
+        OutputStream fileOut = null;
+        BufferedInputStream buffIn = null;
+        try {
+            //prepare download
+            File file = new File(resourceDir + filename);
+            file.mkdirs();
+            fileOut = new FileOutputStream(file);
+            buffIn = new BufferedInputStream(resource.getURL().openStream());
+            //download the file.
+            int i;
+            while ((i = buffIn.read()) != -1) {
+                fileOut.write(i);
+            }
+
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error while downloading file: " + filename + "\n" + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } finally {
+            closeQuietly(fileOut);
+            closeQuietly(buffIn);
+        }
+        LOGGER.log(Level.FINEST, "Saved file to: " + resourceDir);
+        return true;
     }
 
     public Map<String, WebsiteEntity> getVisitedWebsites() {

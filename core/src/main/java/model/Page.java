@@ -107,4 +107,14 @@ public class Page {
     public void setExtPages(Set<String> extPages) {
         this.extPages = extPages;
     }
+
+    public String getSimpleUrl() {
+        int startIndex = url.indexOf("://")+3;
+        int endIndex = url.length();
+        int domainEndIndex = url.indexOf("/", startIndex);
+        if (domainEndIndex > 0) {
+            endIndex = domainEndIndex;
+        }
+        return url.substring(startIndex, endIndex);
+    }
 }

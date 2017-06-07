@@ -27,6 +27,8 @@ public class ResourceEntity {
     @Column(name = "size")
     private int size;
 
+
+
     public ResourceEntity(String name, String url, int size) {
         this.name = name;
         this.url = url;
