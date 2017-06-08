@@ -3,6 +3,11 @@ package model;
 import constants.DBConstants;
 
 import javax.persistence.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.locks.Lock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Marc on 23-5-2017.
@@ -27,7 +32,7 @@ public class ResourceEntity {
     @Column(name = "size")
     private int size;
 
-
+    private static final Logger LOGGER = Logger.getLogger(ResourceEntity.class.getName());
 
     public ResourceEntity(String name, String url, int size) {
         this.name = name;
@@ -70,6 +75,15 @@ public class ResourceEntity {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public URL getURL(){
+        try {
+            return new URL(getUrl());
+        } catch (MalformedURLException e) {
+            LOGGER.log(Level.SEVERE, "Unexpected error in URL: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override

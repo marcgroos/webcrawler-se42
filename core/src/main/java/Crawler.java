@@ -3,6 +3,7 @@ import model.ResourceEntity;
 import model.WebsiteEntity;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import util.ResourceDLManager;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -32,13 +33,16 @@ public class Crawler {
     private Map<String, List<ResourceEntity>> resourceMap;
     private String startUrl;
     //the string to the root folder of app, used for saving temp files
-    private String resourceDir;
+
+
+    private ResourceDLManager downloader;
+
 
     public Crawler(String startUrl) throws MalformedURLException, SocketTimeoutException {
         this.startUrl = startUrl;
         visitedWebsites = new HashMap<>();
         startWebsite = start();
-        resourceDir = System.getProperty("user.dir") + "/core/src/main/resources/foundFiles";
+        downloader = new ResourceDLManager();
     }
 
     /**
@@ -50,7 +54,6 @@ public class Crawler {
     public List<ResourceEntity> getResourcesForWebsite(WebsiteEntity website, Boolean saveToDisk) {
         //todo separate audio, video and photo types.
         Elements sourcesElement = website.getPage().getDocument().select("[src]");
-        String filenamePrefix = website.getPage().getSimpleUrl() + "_";
 
         List<ResourceEntity> resources = new ArrayList<>();
 
@@ -58,10 +61,10 @@ public class Crawler {
             try {
                 //prepare file and source
                 URL url = new URL(source.attr("abs:src"));
-                ResourceEntity resource = checkAndCreateResource(url);
+                ResourceEntity resource = checkAndMakeResource(url);
                 //if preferred, save file to disk
                 if (saveToDisk) {
-                    DLFileFromResource(resource, filenamePrefix);
+                    downloader.saveResourceFile(resource);
                 }
                 resources.add(resource);
 
@@ -72,54 +75,31 @@ public class Crawler {
         return resources;
     }
 
-    private ResourceEntity checkAndCreateResource(URL url) {
+    private ResourceEntity checkAndMakeResource(URL url) {
         //todo create method, fix something for getting properties for different filetypes.
         String fileName = url.getFile();
         String extension = fileName.substring(fileName.lastIndexOf("."));
-
+        ResourceEntity madeSource;
         switch (extension){
             case ".mp3":
+            case ".wav":
+                madeSource = downloader.getAudioResource(url);
                 break;
             case ".png":
             case ".jpg":
+                madeSource = downloader.getImageResource(url);
                 break;
             case ".mp4":
+                madeSource = downloader.getVideoResource(url);
                 break;
             default:
+                madeSource = downloader.getUnknownResource(url);
                 break;
         }
-
+        return madeSource;
     }
 
-    private Boolean DLFileFromResource(ResourceEntity resource, String fileTemplate) {
-        //todo move DL functionality to new class
 
-        String filename = resource.getURL() + resource.getName();
-        OutputStream fileOut = null;
-        BufferedInputStream buffIn = null;
-        try {
-            //prepare download
-            File file = new File(resourceDir + filename);
-            file.mkdirs();
-            fileOut = new FileOutputStream(file);
-            buffIn = new BufferedInputStream(resource.getURL().openStream());
-            //download the file.
-            int i;
-            while ((i = buffIn.read()) != -1) {
-                fileOut.write(i);
-            }
-
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Error while downloading file: " + filename + "\n" + e.getMessage());
-            e.printStackTrace();
-            return false;
-        } finally {
-            closeQuietly(fileOut);
-            closeQuietly(buffIn);
-        }
-        LOGGER.log(Level.FINEST, "Saved file to: " + resourceDir);
-        return true;
-    }
 
     public Map<String, WebsiteEntity> getVisitedWebsites() {
         return visitedWebsites;
