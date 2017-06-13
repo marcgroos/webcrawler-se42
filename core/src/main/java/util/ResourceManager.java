@@ -7,7 +7,6 @@ import model.ResourceEntity;
 import model.VideoEntity;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
@@ -20,13 +19,13 @@ import static org.apache.commons.io.IOUtils.closeQuietly;
 /**
  * @author Yannic on 8-6-17.
  */
-public class ResourceDLManager {
+public class ResourceManager {
 
-    private static final Logger LOGGER = Logger.getLogger(ResourceDLManager.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ResourceManager.class.getName());
 
     private String resourceDir;
 
-    public ResourceDLManager() {
+    public ResourceManager() {
         resourceDir = System.getProperty("user.dir") + "/core/src/main/resources/foundFiles";
     }
 

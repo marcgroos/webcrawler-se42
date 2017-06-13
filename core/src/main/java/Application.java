@@ -20,7 +20,7 @@ public class Application {
             e.printStackTrace();
         }
         WebsiteEntity rootSite = mainCrawler.getStartWebsite();
-        mainCrawler.getResourcesForWebsite(rootSite);
+        mainCrawler.getResourcesForWebsite(rootSite, false);
         //List<WebsiteEntity> siteList = mainCrawler.getExternalSitesFromSite(rootSite);
 
     }

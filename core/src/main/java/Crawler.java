@@ -3,7 +3,7 @@ import model.ResourceEntity;
 import model.WebsiteEntity;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import util.ResourceDLManager;
+import util.ResourceManager;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -25,7 +25,7 @@ import static org.apache.commons.io.IOUtils.closeQuietly;
  * @author Yannic
  */
 public class Crawler {
-
+    //todo make new extension of this class with search capabilities.
     private static final Logger LOGGER = Logger.getLogger(Crawler.class.getName());
 
     private WebsiteEntity startWebsite;
@@ -35,14 +35,14 @@ public class Crawler {
     //the string to the root folder of app, used for saving temp files
 
 
-    private ResourceDLManager downloader;
+    private ResourceManager downloader;
 
 
     public Crawler(String startUrl) throws MalformedURLException, SocketTimeoutException {
         this.startUrl = startUrl;
         visitedWebsites = new HashMap<>();
         startWebsite = start();
-        downloader = new ResourceDLManager();
+        downloader = new ResourceManager();
     }
 
     /**
@@ -52,7 +52,7 @@ public class Crawler {
      * @return
      */
     public List<ResourceEntity> getResourcesForWebsite(WebsiteEntity website, Boolean saveToDisk) {
-        //todo separate audio, video and photo types.
+
         Elements sourcesElement = website.getPage().getDocument().select("[src]");
 
         List<ResourceEntity> resources = new ArrayList<>();
@@ -77,6 +77,7 @@ public class Crawler {
 
     private ResourceEntity checkAndMakeResource(URL url) {
         //todo create method, fix something for getting properties for different filetypes.
+        // todo test audio video and photo types.
         String fileName = url.getFile();
         String extension = fileName.substring(fileName.lastIndexOf("."));
         ResourceEntity madeSource;
