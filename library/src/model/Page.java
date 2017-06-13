@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.xml.bind.annotation.XmlElement;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,9 +25,12 @@ public class Page {
 
     private static final Logger LOGGER = Logger.getLogger(Page.class.getName());
 
+    @XmlElement(name = "url")
     private String url;
     private Document document;
+    @XmlElement(name = "subPages")
     private Set<String> subPages;
+
     private Set<String> extPages;
 
     /**
@@ -39,6 +43,9 @@ public class Page {
         subPages = new HashSet<>();
         extPages = new HashSet<>();
         initPageDoc();
+    }
+    public Page(){
+
     }
 
     public Document getDocument() {

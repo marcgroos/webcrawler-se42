@@ -2,3 +2,4 @@ rootProject.name = 'org.webcrawler'
 
 include ':core'
 include ':ui'
+include ':library'

@@ -1,11 +1,12 @@
+import model.WebsiteEntity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import service.Crawler;
 
-import java.io.IOException;
+
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertNotNull;
@@ -39,6 +40,7 @@ public class CrawlerTest {
             e.printStackTrace();
         }
         assertNotNull(testCrawler.getStartWebsite().getPage());
+
     }
 
     @Test

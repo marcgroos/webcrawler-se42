@@ -1,3 +1,5 @@
+package service;
+
 import model.Page;
 import model.ResourceEntity;
 import model.WebsiteEntity;
@@ -32,7 +34,6 @@ public class Crawler {
     private Map<String, WebsiteEntity> visitedWebsites;
     private Map<String, List<ResourceEntity>> resourceMap;
     private String startUrl;
-    //the string to the root folder of app, used for saving temp files
 
 
     private ResourceManager downloader;

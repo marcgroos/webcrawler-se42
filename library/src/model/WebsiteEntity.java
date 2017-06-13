@@ -3,6 +3,7 @@ package model;
 import constants.DBConstants;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -12,9 +13,12 @@ import java.util.List;
 @Entity
 @Table(name = "website", schema = DBConstants.DB_NAME)
 public class WebsiteEntity {
+
     private int websiteId;
+
     private Timestamp date;
     private String url;
+    @XmlElement(name = "page")
     private Page page;
 
     public Page getPage() {
@@ -52,6 +56,7 @@ public class WebsiteEntity {
 
     @Basic
     @Column(name = "url")
+    @XmlElement(name = "url")
     public String getUrl() {
         return url;
     }
