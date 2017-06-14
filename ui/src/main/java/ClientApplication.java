@@ -1,6 +1,5 @@
-import model.WebsiteEntity;
-import service.MainImpl;
-import service.MainService;
+import model.Website;
+import service.CoreService;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -16,14 +15,13 @@ public class ClientApplication {
         try {
             URL url = new URL("http://localhost:8080/service/main?wsdl");
 
-            QName qname = new QName("http://service/", "MainImplService");
+            QName qname = new QName("http://service/", "CoreImplService");
             Service service = Service.create(url, qname);
-            MainService impl = service.getPort(MainService.class);
+            CoreService impl = service.getPort(CoreService.class);
 
-            WebsiteEntity website = impl.getWebsite("http://www.google.com");
-            for(String site:website.getPage().getSubPages()){
-                System.out.println(site + "\n");
-            }
+            Website website = impl.getWebsite("http://www.google.com");
+            System.out.println(website.getDate().toLocalDateTime().toString() + " - " + website.getUrl());
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

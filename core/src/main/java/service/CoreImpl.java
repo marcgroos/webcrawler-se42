@@ -1,34 +1,35 @@
 package service;
 
+import model.Website;
 import model.WebsiteEntity;
 
 import javax.jws.WebService;
-import javax.xml.soap.*;
-import javax.xml.ws.Provider;
-import javax.xml.ws.WebServiceProvider;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * @author Yannic on 13-6-17.
  */
-@WebService(endpointInterface = "service.MainService")
-public class MainImpl implements MainService{
+@WebService(endpointInterface = "service.CoreService")
+public class CoreImpl implements CoreService {
 
-    private static final Logger LOGGER = Logger.getLogger(MainImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CoreImpl.class.getName());
 
 
     @Override
-    public WebsiteEntity getWebsite(String url) {
+    public Website getWebsite(String url) {
         Crawler crawler;
         try {
             crawler = new Crawler(url);
-            return crawler.getStartWebsite();
+            WebsiteEntity websiteEntity = crawler.getStartWebsite();
+            Website modelSite = new Website();
+            modelSite.setDate(websiteEntity.getDate());
+            modelSite.setUrl(websiteEntity.getUrl());
+            modelSite.setWebsiteId(websiteEntity.getWebsiteId());
+            return modelSite;
+
         } catch (SocketTimeoutException e) {
             LOGGER.log(Level.WARNING, "Site took to long to respond. \n" + e.getMessage());
         } catch (MalformedURLException e) {

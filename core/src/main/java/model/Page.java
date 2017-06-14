@@ -7,13 +7,14 @@ import org.jsoup.select.Elements;
 
 import javax.xml.bind.annotation.XmlElement;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This is a class uses to represent a page of a website.
+ * This is a class uses to represent a page of a Website.
  * Usage:
  * Initialize with constructor.
  * If you need the HTML of the page, call initPageDoc()
@@ -21,14 +22,12 @@ import java.util.logging.Logger;
  *
  * @author Yannic on 23-5-17.
  */
-public class Page {
+public class Page implements Serializable{
 
     private static final Logger LOGGER = Logger.getLogger(Page.class.getName());
 
-    @XmlElement(name = "url")
     private String url;
     private Document document;
-    @XmlElement(name = "subPages")
     private Set<String> subPages;
 
     private Set<String> extPages;

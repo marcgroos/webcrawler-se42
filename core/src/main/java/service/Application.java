@@ -1,20 +1,19 @@
 package service;
 
-import model.WebsiteEntity;
-
 import javax.xml.ws.Endpoint;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Marc on 3-5-2017.
  */
 public class Application {
-
+    private static final Logger LOGGER = Logger.getLogger(Application.class.getName());
     public static void main(String[] args) {
 
-        Endpoint.publish("http://localhost:8080/service/main", new MainImpl());
 
+        Endpoint.publish("http://localhost:8080/service/main", new CoreImpl());
+        LOGGER.log(Level.INFO, "Main function service running");
 
 
         /*        String startUrl = "http://google.com/";

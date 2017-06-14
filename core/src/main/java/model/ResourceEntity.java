@@ -3,6 +3,7 @@ package model;
 import constants.DBConstants;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.locks.Lock;
@@ -18,7 +19,7 @@ import static org.eclipse.persistence.config.CommitOrderType.Id;
 @Inheritance(strategy=InheritanceType.JOINED)
 @DiscriminatorColumn(name="resource_type")
 @Table(name = "resource", schema = DBConstants.DB_NAME)
-public class ResourceEntity {
+public class ResourceEntity implements Serializable{
 
     @Id
     @GeneratedValue

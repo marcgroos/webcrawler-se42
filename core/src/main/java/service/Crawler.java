@@ -11,6 +11,8 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,6 +41,12 @@ public class Crawler {
     private ResourceManager downloader;
 
 
+    /**
+     * The constructor for this class, it creates the first Website automatically, if you need more websites you can use the methods to retrieve more.
+     * @param startUrl the url to create the first Website out of, use http:// before url!
+     * @throws MalformedURLException is thrown when the input cannot be interpreted as url.
+     * @throws SocketTimeoutException is thrown when the response takes too long.
+     */
     public Crawler(String startUrl) throws MalformedURLException, SocketTimeoutException {
         this.startUrl = startUrl;
         visitedWebsites = new HashMap<>();
@@ -47,7 +55,7 @@ public class Crawler {
     }
 
     /**
-     * This method retrieves all the resources it can find on the given website.
+     * This method retrieves all the resources it can find on the given Website.
      *
      * @param website
      * @return
@@ -116,8 +124,8 @@ public class Crawler {
     }
 
     /**
-     * Creates the first website entity with the entered parameters
-     * This method expects the homepage of a website (e.g: http://www.stackoverflow.com).
+     * Creates the first Website entity with the entered parameters
+     * This method expects the homepage of a Website (e.g: http://www.stackoverflow.com).
      * @return a WebsiteEntity or null if errors occur  
      */
     ;
@@ -125,8 +133,10 @@ public class Crawler {
     private WebsiteEntity start() throws MalformedURLException, SocketTimeoutException {
         try {
             Page page = new Page(startUrl);
-            //add website to visited sites.
+            //add Website to visited sites.
             WebsiteEntity site = new WebsiteEntity(page);
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            site.setDate(timestamp);
             visitedWebsites.put(page.getTrimUrl(true), site);
             return site;
 
@@ -143,7 +153,7 @@ public class Crawler {
     }
 
     /**
-     * loops through the list of external links in the given website and parses their HTML;
+     * loops through the list of external links in the given Website and parses their HTML;
      *
      * @param website
      * @return A list of Websites.
@@ -156,7 +166,7 @@ public class Crawler {
         homePage.initPageSites();
         Set<String> pages = homePage.getExtPages();
         for (String url : pages) {
-            //check if website is visited, if so, return that one.
+            //check if Website is visited, if so, return that one.
             Page tempPage = null;
             try {
                 tempPage = new Page(url);
@@ -168,10 +178,10 @@ public class Crawler {
                 continue;
             }
             if (isKnownDomain(tempPage)) {
-                //add the the url to the already existing website's Set of urls
+                //add the the url to the already existing Website's Set of urls
                 visitedWebsites.get(tempPage.getTrimUrl(true)).getPage().addSubPage(url);
             } else {
-                //create a new website with the trimmed url, and new HomePage.
+                //create a new Website with the trimmed url, and new HomePage.
                 String trimUrl = tempPage.getTrimUrl(true);
                 try {
                     visitedWebsites.put(trimUrl, new WebsiteEntity(new Page(trimUrl)));
