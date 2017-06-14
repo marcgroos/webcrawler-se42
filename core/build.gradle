@@ -4,4 +4,5 @@ dependencies {
     compile 'org.jsoup:jsoup:1.10.2'
     compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
 
+    compile project(":library")
 }

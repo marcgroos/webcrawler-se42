@@ -21,7 +21,7 @@ public class ClientApplication {
             CoreService impl = service.getPort(CoreService.class);
 
             Website website = impl.getWebsite("http://www.google.com");
-            System.out.println(new Timestamp(website.getDate()).toLocalDateTime().toString() + " - " + website.getUrl());
+            System.out.println(website.getWebsiteId()+ " - " + new Timestamp(website.getDate()).toLocalDateTime().toString() + " - " + website.getUrl());
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

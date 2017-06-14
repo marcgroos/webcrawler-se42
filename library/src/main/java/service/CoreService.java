@@ -12,4 +12,6 @@ import javax.jws.WebService;
 public interface CoreService {
     @WebMethod
     public Website getWebsite(String url);
+
+
 }
