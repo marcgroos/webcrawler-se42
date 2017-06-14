@@ -11,7 +11,6 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.logging.Level;
@@ -50,9 +49,17 @@ public class Crawler {
     public Crawler(String startUrl) throws MalformedURLException, SocketTimeoutException {
         this.startUrl = startUrl;
         visitedWebsites = new HashMap<>();
-        startWebsite = start();
         downloader = new ResourceManager();
+        startWebsite = getWebsite(startUrl);
+
     }
+    public Crawler(){
+        startUrl = "";
+        visitedWebsites = new HashMap<>();
+        downloader = new ResourceManager();
+        startWebsite = null;
+    }
+
 
     /**
      * This method retrieves all the resources it can find on the given Website.
@@ -75,8 +82,10 @@ public class Crawler {
                 if (saveToDisk) {
                     downloader.saveResourceFile(resource);
                 }
-                resources.add(resource);
 
+                if(resource != null){
+                    resources.add(resource);
+                }
             } catch (MalformedURLException e1) {
                 LOGGER.log(Level.WARNING, e1.getCause() + e1.getMessage());
             }
@@ -124,15 +133,15 @@ public class Crawler {
     }
 
     /**
-     * Creates the first Website entity with the entered parameters
+     * Creates the a Website with the entered parameters
      * This method expects the homepage of a Website (e.g: http://www.stackoverflow.com).
      * @return a WebsiteEntity or null if errors occur  
      */
     ;
 
-    private WebsiteEntity start() throws MalformedURLException, SocketTimeoutException {
+    public WebsiteEntity getWebsite(String url) throws MalformedURLException, SocketTimeoutException {
         try {
-            Page page = new Page(startUrl);
+            Page page = new Page(url);
             //add Website to visited sites.
             WebsiteEntity site = new WebsiteEntity(page);
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());

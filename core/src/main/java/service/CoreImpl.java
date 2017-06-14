@@ -16,8 +16,10 @@ import java.util.logging.Logger;
 public class CoreImpl implements CoreService {
 
     private static final Logger LOGGER = Logger.getLogger(CoreImpl.class.getName());
-
-
+    private Crawler crawler;
+    public CoreImpl(){
+        crawler = new Crawler();
+    }
     @Override
     public Website getWebsite(String url) {
         Crawler crawler;
