@@ -20,13 +20,13 @@ public class Website implements Serializable{
         this.websiteId = websiteId;
     }
 
-    public Timestamp getDate() {
-        return new Timestamp(dateInLong);
+    public Long getDate() {
+        return dateInLong;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(Long date) {
 
-        this.dateInLong = date.getTime();
+        this.dateInLong = date;
     }
 
     public String getUrl() {
@@ -39,6 +39,6 @@ public class Website implements Serializable{
 
     @Override
     public String toString(){
-        return websiteId + "_url";
+        return websiteId + "_url: " + url;
     }
 }

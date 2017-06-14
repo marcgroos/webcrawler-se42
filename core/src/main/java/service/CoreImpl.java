@@ -25,7 +25,7 @@ public class CoreImpl implements CoreService {
             crawler = new Crawler(url);
             WebsiteEntity websiteEntity = crawler.getStartWebsite();
             Website modelSite = new Website();
-            modelSite.setDate(websiteEntity.getDate());
+            modelSite.setDate(websiteEntity.getDate().getTime());
             modelSite.setUrl(websiteEntity.getUrl());
             modelSite.setWebsiteId(websiteEntity.getWebsiteId());
             return modelSite;

@@ -21,6 +21,8 @@ public class WebsiteEntity implements Serializable {
     private String url;
     private Page page;
 
+
+
     public Page getPage() {
         return page;
     }
