@@ -36,7 +36,7 @@ public class ResourceManager {
             String contentType = connection.getContentType();
             return audioEntity;
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Could nog get connection: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Could not get connection: " + e.getMessage());
         }
         return null;
     }
