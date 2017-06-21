@@ -1,13 +1,13 @@
-package model;
+package entities;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
- * This is the model class for usage with SOAP.
+ * This is the entities class for usage with SOAP.
  * @author Yannic on 14-6-17.
  */
-public class Website implements Serializable{
+public class Website implements Serializable {
+
     private int websiteId;
     private Long dateInLong;
     private String url;

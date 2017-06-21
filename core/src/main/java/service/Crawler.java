@@ -1,8 +1,8 @@
 package service;
 
 import model.Page;
-import model.ResourceEntity;
-import model.WebsiteEntity;
+import entities.ResourceEntity;
+import entities.WebsiteEntity;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import util.ResourceManager;
@@ -11,7 +11,6 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.logging.Level;

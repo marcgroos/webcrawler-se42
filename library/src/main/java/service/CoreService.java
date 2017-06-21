@@ -1,7 +1,5 @@
 package service;
 
-import model.Website;
-
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
@@ -11,7 +9,7 @@ import javax.jws.WebService;
 @WebService
 public interface CoreService {
     @WebMethod
-    public Website getWebsite(String url);
+    public byte[] getWebsite(String url);
 
 
 }

@@ -1,4 +1,4 @@
-package model;
+package entities;
 
 import constants.DBConstants;
 
@@ -6,11 +6,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static org.eclipse.persistence.config.CommitOrderType.Id;
 
 /**
  * Created by Marc on 23-5-2017.

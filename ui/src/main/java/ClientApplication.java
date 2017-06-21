@@ -1,10 +1,14 @@
-import model.Website;
+import crypto.AES;
+import entities.Website;
 import service.CoreService;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 
 /**
@@ -20,10 +24,13 @@ public class ClientApplication {
             Service service = Service.create(url, qname);
             CoreService impl = service.getPort(CoreService.class);
 
-            Website website = impl.getWebsite("http://www.google.com");
+            byte[] webBytes = impl.getWebsite("http://www.google.com");
+
+            Website website = (Website) AES.decrypt(webBytes, AES.generateKey());
+
             System.out.println(website.getWebsiteId()+ " - " + new Timestamp(website.getDate()).toLocalDateTime().toString() + " - " + website.getUrl());
 
-        } catch (MalformedURLException e) {
+        } catch (NoSuchAlgorithmException | IOException | ClassNotFoundException | InvalidKeyException e) {
             e.printStackTrace();
         }
 

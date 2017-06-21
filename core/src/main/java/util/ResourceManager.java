@@ -1,10 +1,10 @@
 package util;
 
 import javafx.scene.media.VideoTrack;
-import model.AudioEntity;
-import model.ImageEntity;
-import model.ResourceEntity;
-import model.VideoEntity;
+import entities.AudioEntity;
+import entities.ImageEntity;
+import entities.ResourceEntity;
+import entities.VideoEntity;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

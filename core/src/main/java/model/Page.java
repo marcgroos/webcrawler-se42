@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.xml.bind.annotation.XmlElement;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -22,11 +21,12 @@ import java.util.logging.Logger;
  *
  * @author Yannic on 23-5-17.
  */
-public class Page implements Serializable{
+public class Page implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(Page.class.getName());
 
     private String url;
+
     private Document document;
     private Set<String> subPages;
 

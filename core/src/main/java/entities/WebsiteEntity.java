@@ -1,12 +1,11 @@
-package model;
+package entities;
 
 import constants.DBConstants;
+import model.Page;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Created by Marc on 10-5-2017.
@@ -20,8 +19,6 @@ public class WebsiteEntity implements Serializable {
     private Timestamp date;
     private String url;
     private Page page;
-
-
 
     public Page getPage() {
         return page;
