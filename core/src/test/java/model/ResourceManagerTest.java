@@ -8,6 +8,8 @@ import service.Crawler;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 
+import static org.junit.Assert.*;
+
 /**
  * @author Yannic on 13-6-17.
  */
@@ -28,6 +30,6 @@ public class ResourceManagerTest {
     public void getImageResourceTest() throws MalformedURLException, SocketTimeoutException {
         WebsiteEntity website = testCrawler.getWebsite("http://www.banaanmetoor.nl");
         ResourceEntity resource = testCrawler.getResourcesForWebsite(website, false).get(0);
-        resource.getSize();
+        assertEquals(82673, resource.getSize());
     }
 }
